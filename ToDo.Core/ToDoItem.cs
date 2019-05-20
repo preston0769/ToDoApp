@@ -4,6 +4,12 @@ namespace ToDo
 {
     public class ToDoItem
     {
+        public ToDoItem( Guid id, string description)
+        {
+            Id = id;
+            Description = description;
+
+        }
         public ToDoItem(string description)
         {
             Id = Guid.NewGuid(); 
@@ -14,6 +20,11 @@ namespace ToDo
         public string Description { get; set; }
 
         public Status status { get; set; }
+
+        public override string ToString()
+        {
+            return $"[{Id}] {Description} - {status}";
+        }
     }
 
     public enum Status

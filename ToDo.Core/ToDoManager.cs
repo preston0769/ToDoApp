@@ -43,32 +43,42 @@ namespace ToDo
 
         public void UpdateToDoItem(ToDoItem newItem)
         {
-            var oldItem = ToDoList.Where(x => x.Id == newItem.Id).FirstOrDefault();
-
             var entity = _dbContext.ToDoItems.Where(x => x.Id == newItem.Id).FirstOrDefault();
 
             if (entity == null)
                 throw new Exception("Entity Not found");
-            entity = newItem;
 
-            _dbContext.Entry(entity).State = EntityState.Modified; 
-
+            _dbContext.Entry(entity).State = EntityState.Detached;
+            _dbContext.Attach(newItem);
             _dbContext.SaveChanges();
 
         }
 
         public void CompleteTodoItem(Guid id)
         {
-            var entitiy = _dbContext.ToDoItems.Where(x => x.Id == id).FirstOrDefault();
+            var entity = _dbContext.ToDoItems.Where(x => x.Id == id).FirstOrDefault();
 
-            if(entitiy == null)
+            if(entity == null)
                 throw new Exception("Entity Not found");
 
-            entitiy.status = Status.Completed;
+            entity.status = Status.Completed;
+            _dbContext.Entry(entity).State = EntityState.Modified;
 
             _dbContext.SaveChanges();
         }
 
+        public void DeleteToDoItem(Guid guid)
+        {
+            var entity = _dbContext.ToDoItems.Where(x => x.Id == guid).FirstOrDefault();
+
+            if(entity == null)
+                throw new Exception("Entity Not found");
+
+            _dbContext.ToDoItems.Remove(entity);
+            _dbContext.Entry(entity).State = EntityState.Deleted;
+
+            _dbContext.SaveChanges();
+        }
     }
 }
 
