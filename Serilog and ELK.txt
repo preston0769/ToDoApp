@@ -1,0 +1,19 @@
+Serilog log has so many sinks to suit different purpose of application
+some of them are
+	File
+	Http   --- Could send to logstash
+	ElasticSearch
+	Console
+	Async
+A full list of them are located here
+https://github.com/serilog/serilog/wiki/Provided-Sinks
+
+
+
+ELK can be easily config to digest serilogs
+for local development, use docker compose to lauch a mini cluster to have ELK stack
+then use http to log events logstash which will transform then push to elastic search
+
+details can be found here
+http://blog.romanpavlov.me/logging-serilog-elk/
+

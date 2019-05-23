@@ -1,0 +1,39 @@
+Asp.net runs in Process of IIS
+
+IIS will allocate a thread when a request is coming from thread pool
+
+Thread will have request context along with the thread
+
+in Async and Await before the await, then context will be stored in some place
+to resumed by same or another thread.
+
+
+Async is and await are used same context as request thread.
+
+Task.Run or Task.Factory.Startnew will use context free thread from thread pool which
+may be worth considering
+
+
+Thread.CurrentThread will get current managed thread Id
+
+SynchronizationContext.Current will get current synchronization context of execution.
+
+ConfigAwait is used if the returning context is not required to be same context as the calling one
+
+In Runtime, the async and await is compiled into StatMachine's MoveNext() Method
+
+
+https://weblogs.asp.net/dixin/understanding-c-sharp-async-await-3-runtime-context
+
+The executionContext is the context which will be genarated by Marshal which is provided by await
+infrastructure( possibly Task Parallal Library(TPL))
+
+
+Some key points need to remember:
+
+Marshal handle the infrastructre of async and await
+
+It helps manage the execution context which include security context,sychronization context,etc
+
+Sync method calling getawaiter() to wait need to have child task to run seperate synchronization context
+
